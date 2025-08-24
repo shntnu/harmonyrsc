@@ -46,27 +46,27 @@ ${RUN_COPAIRS}
 ${RUN_COPAIRS_BASE}
 ${RUN_COPAIRS} ${WELLPOS}
 ${RUN_COPAIRS_BASE} ${WELLPOS}
-ln -s ../processed/copairs/runs/activity/jump_orf/results/activity_map_plot.png data/figures/jump_orf_activity_map_plot.png
-ln -s ../processed/copairs/runs/activity/jump_orf_harmonized/results/activity_map_plot.png data/figures/jump_orf_harmonized_activity_map_plot.png
-ln -s ../processed/copairs/runs/wellpos/jump_orf/results/wellpos_map_plot.png data/figures/jump_orf_wellpos_map_plot.png
-ln -s ../processed/copairs/runs/wellpos/jump_orf_harmonized/results/wellpos_map_plot.png data/figures/jump_orf_harmonized_wellpos_map_plot.png
+cp data/processed/copairs/runs/activity/jump_orf/results/activity_map_plot.png data/figures/jump_orf_activity_map_plot.png
+cp data/processed/copairs/runs/activity/jump_orf_harmonized/results/activity_map_plot.png data/figures/jump_orf_harmonized_activity_map_plot.png
+cp data/processed/copairs/runs/wellpos/jump_orf/results/wellpos_map_plot.png data/figures/jump_orf_wellpos_map_plot.png
+cp data/processed/copairs/runs/wellpos/jump_orf_harmonized/results/wellpos_map_plot.png data/figures/jump_orf_harmonized_wellpos_map_plot.png
 ```
 
 **activity/jump_orf:**
 
-[![Activity map](data/figures/jump_orf_activity_map_plot.png)]
+![Activity map](data/figures/jump_orf_activity_map_plot.png)
 
 **activity/jump_orf_harmonized:**
 
-[![Activity map](data/figures/jump_orf_harmonized_activity_map_plot.png)]
+![Activity map](data/figures/jump_orf_harmonized_activity_map_plot.png)
 
 **wellpos/jump_orf:**
 
-[![Wellpos map](data/figures/jump_orf_wellpos_map_plot.png)]
+![Wellpos map](data/figures/jump_orf_wellpos_map_plot.png)
 
 **wellpos/jump_orf_harmonized:**
 
-[![Wellpos map](data/figures/jump_orf_harmonized_wellpos_map_plot.png)]
+![Wellpos map](data/figures/jump_orf_harmonized_wellpos_map_plot.png)
 
 **Evaluate differences in MAP and p-value agreement:**
 
