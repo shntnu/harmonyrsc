@@ -1,0 +1,70 @@
+dataset:
+  name: compound_no_source7
+  path: data/raw/profiles/compound_no_source7.parquet
+  description: Compound dataset excluding source 7
+columns:
+  name: feat_all
+  columns: null
+  description: All available features for comprehensive analysis
+preprocessing:
+  name: activity_no_target2
+  steps:
+  - type: merge_metadata
+    params:
+      source: data/external/jump_metadata.duckdb
+      table: plate
+      on_columns: Metadata_Plate
+      how: left
+  - type: merge_metadata
+    params:
+      source: data/external/jump_metadata.duckdb
+      table: perturbation_control
+      on_columns: Metadata_JCP2022
+      how: left
+  - type: filter
+    params:
+      query: Metadata_PlateType != 'TARGET2'
+  - type: filter
+    params:
+      query: Metadata_pert_type != 'poscon'
+  - type: remove_nan_features
+    params: null
+  - type: add_column
+    params:
+      query: Metadata_pert_type == 'negcon'
+      column: Metadata_negcon
+  - type: apply_assign_reference
+    params:
+      condition: Metadata_negcon
+      reference_col: Metadata_reference_index
+      default_value: -1
+filter:
+  name: all_sources
+  query: null
+  description: Include all data sources
+input:
+  use_lazy_filter: true
+  path: ${dataset.path}
+  columns: ${columns.columns}
+  filter_query: ${filter.query}
+average_precision:
+  params:
+    pos_sameby:
+    - Metadata_JCP2022
+    - Metadata_reference_index
+    pos_diffby: []
+    neg_sameby:
+    - Metadata_Plate
+    neg_diffby:
+    - Metadata_negcon
+    batch_size: 1000
+mean_average_precision:
+  params:
+    sameby:
+    - Metadata_JCP2022
+    null_size: 100000
+    threshold: 0.1
+    seed: 12527
+output:
+  directory: ${hydra:runtime.output_dir}
+  name: activity

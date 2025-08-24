@@ -5,6 +5,7 @@ name = "harmonyrsc"
 platforms = ["linux-64"]
 version = "0.1.0"
 channel-priority = "disabled"
+preview = ["pixi-build"]
 
 [tasks]
 
@@ -24,3 +25,4 @@ omnipath = "*"
 gdown = "*"
 wget = "*"
 rapids-singlecell = "*"
+copairs-runner = { git = "https://github.com/broadinstitute/monorepo.git", subdirectory = "libs/copairs_runner", rev = "copairs-runner" }
