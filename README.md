@@ -11,6 +11,7 @@ pixi install
 ## Test with JUMP data
 
 Download test data:
+
 ```bash
 mkdir -p data/raw/profiles
 wget \
@@ -19,24 +20,16 @@ wget \
 ```
 
 Run Harmony:
+
 ```bash
 mkdir -p data/intermediate/profiles
 pixi run python harmonyrsc.py \
     data/raw/profiles/jump_orf.parquet \
     data/intermediate/profiles/jump_orf_harmonized.parquet \
-    Metadata_Batch
+    Metadata_Plate
 ```
 
-## Usage
-
-```bash
-python harmonyrsc.py <input.parquet> <output.parquet> <batch_column>
-```
-
-- `input.parquet`: Morphological profiles with metadata columns
-- `output.parquet`: Harmonized features output
-- `batch_column`: Metadata column to use for batch correction (e.g., "Metadata_Source")
-
+Evaluate results using [copairs](https://github.com/cytomining/copairs):
 
 ```bash
 mkdir -p data/external
@@ -45,10 +38,64 @@ wget \
     -O data/external/jump_metadata.duckdb
 ```
 
+```bash
+RUN_COPAIRS='pixi run copairs-runner --config-dir configs/ --config-name copairs'
+RUN_COPAIRS_BASE="$RUN_COPAIRS dataset.name=jump_orf dataset.path=\"data/raw/profiles/jump_orf.parquet\""
+WELLPOS='output.name=wellpos average_precision.params.pos_sameby=[Metadata_Well,Metadata_reference_index] average_precision.params.pos_diffby=[Metadata_JCP2022] average_precision.params.neg_sameby=[Metadata_Source,Metadata_Batch] mean_average_precision.params.sameby=[Metadata_Well]'
+${RUN_COPAIRS}
+${RUN_COPAIRS_BASE}
+${RUN_COPAIRS} ${WELLPOS}
+${RUN_COPAIRS_BASE} ${WELLPOS}
+ln -s ../processed/copairs/runs/activity/jump_orf/results/activity_map_plot.png data/figures/jump_orf_activity_map_plot.png
+ln -s ../processed/copairs/runs/activity/jump_orf_harmonized/results/activity_map_plot.png data/figures/jump_orf_harmonized_activity_map_plot.png
+ln -s ../processed/copairs/runs/wellpos/jump_orf/results/wellpos_map_plot.png data/figures/jump_orf_wellpos_map_plot.png
+ln -s ../processed/copairs/runs/wellpos/jump_orf_harmonized/results/wellpos_map_plot.png data/figures/jump_orf_harmonized_wellpos_map_plot.png
+```
 
+**activity/jump_orf:**
 
+[![Activity map](data/figures/jump_orf_activity_map_plot.png)]
 
+**activity/jump_orf_harmonized:**
 
+[![Activity map](data/figures/jump_orf_harmonized_activity_map_plot.png)]
 
+**wellpos/jump_orf:**
 
+[![Wellpos map](data/figures/jump_orf_wellpos_map_plot.png)]
 
+**wellpos/jump_orf_harmonized:**
+
+[![Wellpos map](data/figures/jump_orf_harmonized_wellpos_map_plot.png)]
+
+**Evaluate differences in MAP and p-value agreement:**
+
+```bash
+duckdb < scripts/compare.sql
+```
+
+Output:
+
+```
+Step 1: Row/ID sanity check
+┌────────────┬──────────────┐
+│ total_rows │ matching_ids │
+│   int64    │    int64     │
+├────────────┼──────────────┤
+│   15126    │    15126     │
+└────────────┴──────────────┘
+Step 2: MAP difference buckets
+┌─────────────────┬────────────────┬───────────────┬──────────────────┬─────────────────────┬─────────────────────┬─────────────────────────┐
+│ diff_less_0_001 │ diff_less_0_01 │ diff_less_0_1 │ diff_greater_0_1 │ percent_diff_less_1 │ percent_diff_less_5 │ percent_diff_greater_10 │
+│      int64      │     int64      │     int64     │      int64       │        int64        │        int64        │          int64          │
+├─────────────────┼────────────────┼───────────────┼──────────────────┼─────────────────────┼─────────────────────┼─────────────────────────┤
+│      1276       │      4148      │     14720     │       406        │        2793         │        8917         │          2374           │
+└─────────────────┴────────────────┴───────────────┴──────────────────┴─────────────────────┴─────────────────────┴─────────────────────────┘
+Step 3: P-value agreement
+┌───────────────────┬───────┬───────────────────┬────────────────────────┬─────────────────────────────┬──────────────────────────────────┐
+│      metric       │ total │ same_significance │ different_significance │ same_corrected_significance │ different_corrected_significance │
+│      varchar      │ int64 │       int64       │         int64          │            int64            │              int64               │
+├───────────────────┼───────┼───────────────────┼────────────────────────┼─────────────────────────────┼──────────────────────────────────┤
+│ P-value Agreement │ 15126 │       14014       │          1112          │            14033            │               1093               │
+└───────────────────┴───────┴───────────────────┴────────────────────────┴─────────────────────────────┴──────────────────────────────────┘
+```

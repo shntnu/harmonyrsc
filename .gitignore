@@ -1,3 +1,8 @@
 # pixi environments
 .pixi/*
 !.pixi/config.toml
+
+# Ignore everything in data except specific files
+data/*
+!data/figures/
+outputs/

@@ -18,6 +18,7 @@ cutensor = "*"
 cusparselt = "*"
 jupyterlab = "*"
 pip = "*"
+pre-commit = ">=4.3.0,<5"
 
 [pypi-dependencies]
 decoupler = "*"

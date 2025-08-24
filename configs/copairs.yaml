@@ -1,11 +1,9 @@
 dataset:
-  name: compound_no_source7
-  path: data/raw/profiles/compound_no_source7.parquet
-  description: Compound dataset excluding source 7
+  name: jump_orf_harmonized
+  path: data/intermediate/profiles/${dataset.name}.parquet
 columns:
   name: feat_all
   columns: null
-  description: All available features for comprehensive analysis
 preprocessing:
   name: activity_no_target2
   steps:
@@ -13,7 +11,9 @@ preprocessing:
     params:
       source: data/external/jump_metadata.duckdb
       table: plate
-      on_columns: Metadata_Plate
+      on_columns:
+        - Metadata_Plate
+        - Metadata_Source
       how: left
   - type: merge_metadata
     params:
@@ -41,7 +41,6 @@ preprocessing:
 filter:
   name: all_sources
   query: null
-  description: Include all data sources
 input:
   use_lazy_filter: true
   path: ${dataset.path}
@@ -66,5 +65,9 @@ mean_average_precision:
     threshold: 0.1
     seed: 12527
 output:
-  directory: ${hydra:runtime.output_dir}
   name: activity
+  directory: data/processed/copairs/runs/${output.name}/${dataset.name}/results
+
+hydra:
+  run:
+    dir: data/processed/copairs/runs/${output.name}/${dataset.name}/results
