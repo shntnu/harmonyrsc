@@ -1,0 +1,26 @@
+[workspace]
+authors = ["Shantanu Singh <shsingh@broadinstitute.org>"]
+channels = ["nvidia", "rapidsai", "conda-forge", "bioconda"]
+name = "harmonyrsc"
+platforms = ["linux-64"]
+version = "0.1.0"
+channel-priority = "disabled"
+
+[tasks]
+
+[dependencies]
+rapids = "25.8.*"
+python = "3.13.*"
+cuda-version = "12.9.*"
+cudnn = "*"
+cutensor = "*"
+cusparselt = "*"
+jupyterlab = "*"
+pip = "*"
+
+[pypi-dependencies]
+decoupler = "*"
+omnipath = "*"
+gdown = "*"
+wget = "*"
+rapids-singlecell = "*"
