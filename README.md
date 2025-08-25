@@ -1,6 +1,6 @@
 # harmonyrsc
 
-Quick POC for testing [Harmony batch correction](https://rapids-singlecell.readthedocs.io/en/latest/api/generated/rapids_singlecell.pp.harmony_integrate.html#rapids_singlecell.pp.harmony_integrate) from [rapids-singlecell](https://scanpy.readthedocs.io/en/stable/index.html) on morphological profiling data from the [JUMP](https://broad.io/jump) dataset.
+Quick POC for testing [Harmony batch correction](https://rapids-singlecell.readthedocs.io/en/latest/api/generated/rapids_singlecell.pp.harmony_integrate.html#rapids_singlecell.pp.harmony_integrate) from [rapids-singlecell](https://rapids-singlecell.readthedocs.io/) on morphological profiling data from the [JUMP](https://broad.io/jump) dataset.
 
 ## Installation
 
