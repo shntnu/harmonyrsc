@@ -102,7 +102,7 @@ Step 3: P-value agreement
 
 ## Addendum
 
-Code: https://github.com/shntnu/harmonypy/tree/v0.0.10-shntnu.1 (run with the gpu acceleration)
+Code: https://github.com/shntnu/harmonypy/tree/v0.0.10-shntnu.1 (run without the gpu acceleration)
 Time: ~11h 
 
 ```
