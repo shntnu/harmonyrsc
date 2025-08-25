@@ -99,3 +99,39 @@ Step 3: P-value agreement
 │ P-value Agreement │ 15126 │       14014       │          1112          │            14033            │               1093               │
 └───────────────────┴───────┴───────────────────┴────────────────────────┴─────────────────────────────┴──────────────────────────────────┘
 ```
+
+## Addendum
+
+Code: https://github.com/shntnu/harmonypy/tree/v0.0.10-shntnu.1 (run with the gpu acceleration)
+Time: ~11h 
+
+```
+Execute 1 jobs...
+[Sun Aug 24 23:45:44 2025]
+localrule harmony:
+    input: outputs/compound_no_source7/profiles_var_mad_int_featselect.parquet
+    output: outputs/compound_no_source7/profiles_var_mad_int_featselect_harmony.parquet
+    jobid: 2
+    benchmark: benchmarks/compound_no_source7/profiles_var_mad_int_featselect_harmony.txt
+    reason: Missing output files: outputs/compound_no_source7/profiles_var_mad_int_featselect_harmony.parquet
+    wildcards: scenario=compound_no_source7, pipeline=profiles_var_mad_int_featselect
+    resources: tmpdir=/tmp
+[Mon Aug 25 10:40:50 2025]
+Finished jobid: 2 (Rule: harmony)
+```
+
+Code: https://github.com/shntnu/harmonyrsc
+Time: 2m50s
+
+```
+time pixi run python harmonyrsc.py ../jump-profiling-recipe/outputs/compound_no_source7/profiles_var_mad_int_featselect.pa
+rquet ../jump-profiling-recipe/outputs/compound_no_source7/profiles_var_mad_int_featselect_harmony_rsc.parquet Metadata_Batch
+Original shape: (754741, 758)
+PCA complete: (754741, 300)
+Harmony complete: (754741, 300)
+Saved harmonized data to: ../jump-profiling-recipe/outputs/compound_no_source7/profiles_var_mad_int_featselect_harmony_rsc.parquet
+
+real    1m31.964s
+user    1m23.014s
+sys     2m50.138s
+```
